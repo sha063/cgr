@@ -81,11 +81,6 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-<<<<<<< HEAD
-# default static files settings for PythonAnywhere.
-# see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
-=======
->>>>>>> 475337ef8f88672a19a567704c3c4127608ef620
 MEDIA_ROOT = '/home/djangodj/cgr/media'
 MEDIA_URL = '/media/'
 
