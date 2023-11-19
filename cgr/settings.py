@@ -5,9 +5,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-$hyh2!7-foi51r&80j=k1l)_-6khn-6k3pv7=j*bg94(-r0u2&'
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['djangodj.pythonanywhere.com','localhost']
+ALLOWED_HOSTS = ['djangodj.pythonanywhere.com','localhost','127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -81,11 +81,10 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = '/home/djangodj/cgr/media'
-MEDIA_URL = '/media/'
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
+MEDIA_URL = 'media/'
+STATIC_URL = 'static/'
 STATICFILES_DIRS=[
-    os.path.join(BASE_DIR,'cgr/static')
+    os.path.join(BASE_DIR,'static')
 ]
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
