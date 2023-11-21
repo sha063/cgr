@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render
 from .models import *
+from . forms import CreateUserForm
 from django.db import models
 from django.contrib.auth.decorators import login_required
 
@@ -85,6 +86,12 @@ def pages_faq(request):
     return HttpResponse(template.render(context, request))
 
 def signup(request):
+    form = CreateUserForm()
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('Login')
     template = loader.get_template('shop/signup.html')
     context = {
         'page_title':PagesFaq,
@@ -92,6 +99,7 @@ def signup(request):
         'product': Product.objects.all(),
         'user': Product.objects.all(),
         'profile_header':ProfileHeader,
+        'registerform':form,
     }
     return HttpResponse(template.render(context, request))
 

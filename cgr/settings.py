@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-$hyh2!7-foi51r&80j=k1l)_-6khn-6k3pv7=j*bg94(-r0u2&
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['djangodj.pythonanywhere.com','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['djangodj.pythonanywhere.com','localhost','127.0.0.1','https://8000-cs-457023567958-default.cs-asia-southeast1-bool.cloudshell.dev']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
