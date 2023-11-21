@@ -1,8 +1,10 @@
 from django.http import HttpResponse
 from django.template import loader
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import *
-from . forms import CreateUserForm
+from . forms import CreateUserForm, LoginForm
+from django.contrib.auth.models import auth
+from django.contrib.auth import authenticate, login, logout
 from django.db import models
 from django.contrib.auth.decorators import login_required
 
@@ -38,7 +40,7 @@ def dashboard(request):
     }
    return HttpResponse(template.render(context, request)) 
 
-#@login_required
+@login_required(login_url="Login")
 def home(request):
     template = loader.get_template('shop/home.html')
     context = {
@@ -48,7 +50,6 @@ def home(request):
         'notifications': ['red', 'yellow', 'green'],
         'category': Category.objects.all(),
         'product': Product.objects.all(),
-        'users':User.objects.all(),
         'profile_header':ProfileHeader,
     }
     return HttpResponse(template.render(context, request))
@@ -59,7 +60,6 @@ def profile(request):
         'page_title': Profile,
         'category': Category.objects.all(),
         'product': Product.objects.all(),
-        'user':User.objects.all(),
         'profile_header':ProfileHeader,
     }
     return HttpResponse(template.render(context, request))
@@ -69,7 +69,6 @@ def settings(request):
     context = {
         'category': Category.objects.all(),
         'product': Product.objects.all(),
-        'user': Product.objects.all(),
         'profile_header':ProfileHeader,
     }
     return HttpResponse(template.render(context, request))
@@ -80,7 +79,6 @@ def pages_faq(request):
         'page_title':PagesFaq,
         'category': Category.objects.all(),
         'product': Product.objects.all(),
-        'user': Product.objects.all(),
         'profile_header':ProfileHeader,
     }
     return HttpResponse(template.render(context, request))
@@ -91,26 +89,35 @@ def signup(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('Login')
+            return redirect("Login")
     template = loader.get_template('shop/signup.html')
     context = {
         'page_title':PagesFaq,
         'category': Category.objects.all(),
         'product': Product.objects.all(),
-        'user': Product.objects.all(),
         'profile_header':ProfileHeader,
         'registerform':form,
     }
     return HttpResponse(template.render(context, request))
 
 def login(request):
+    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request,data=request.POST)
+        if form.is_valid():
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request,username=username,password=password)
+            if user is not None:
+                auth.login(request,user)
+                return redirect("Home")
     template = loader.get_template('shop/login.html')
     context = {
         'page_title':PagesFaq,
         'category': Category.objects.all(),
         'product': Product.objects.all(),
-        'user': Product.objects.all(),
         'profile_header':ProfileHeader,
+        'loginform':form,
     }
     return HttpResponse(template.render(context, request))
 
@@ -119,7 +126,6 @@ def testing(request):
     context = {
         'category': Category.objects.all(),
         'product': Product.objects.all(),
-        'user': Product.objects.all(),
         'profile_header':a,
     }
     return HttpResponse(template.render(context, request))

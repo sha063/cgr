@@ -11,4 +11,3 @@ class users_admin(admin.ModelAdmin):
   
 admin.site.register(Category,category_admin)
 admin.site.register(Product,product_admin) 
-admin.site.register(User,users_admin) 

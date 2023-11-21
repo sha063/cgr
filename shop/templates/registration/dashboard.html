@@ -1,8 +1,0 @@
-{% if request.user.is_authenticated %}
-{% if section == 'dashboard' %}
-{% endif %}
-<a href="{% url 'dashboard' %}">dashboard</a>    
-{% endif %}
-{% block content %}
-red
-{% endblock content %}

@@ -31,11 +31,4 @@ class Product(models.Model):
     
     def __str__(self):
         return self.name  
-    
-class User(models.Model):
-    name = models.CharField(max_length=150,null=False,blank=False)
-    image = models.ImageField(upload_to=getFileName,null=True,blank=True)
-    password = models.CharField(max_length=20)
-    
-    def __str__(self):
-        return self.name  
+     
