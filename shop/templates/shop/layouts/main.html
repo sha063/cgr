@@ -34,6 +34,8 @@
                       <th scope="col">Quantity</th>
                       <th scope="col">Original price</th>
                       <th scope="col">Selling price</th>
+                      <th></th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -47,9 +49,12 @@
                       <td>{{i.quantity}}</td>
                       <td>{{i.original_price}}</td>
                       <td>{{i.selling_price}}</td>
+                      <td><a href="{% url 'UpdateProduct' i.id %}" class="btn btn-success">Edit</a></td>
+                      <td><a href="{% url 'DeleteProduct' i.id %}" class="btn btn-danger">Delete</a></td>
                     {% endfor %}
                   </tbody>
                 </table>
+                <a class="btn btn-primary"  href="{% url 'AddProduct' %}" >Add item</a>
               </div>
             </div>
           </div><!-- End Recent Sales -->

@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render,redirect
 from .models import *
-from . forms import CreateUserForm, LoginForm
+from . forms import *
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate, login, logout
 from django.db import models
@@ -25,21 +25,6 @@ ProfileHeader = [profile_header('person','My Profile',Profile),
      profile_header('question-circle','Need Help?',PagesFaq),
      profile_header('box-arrow-right','Sign Out',Login),]
 
-#@login_required
-def dashboard(request):
-   template = loader.get_template('registration/dashboard.html')
-   context = {
-        'section':'dashboard',
-        'title': 'CGR',
-        'page_title': Home,
-        'notifications': ['red', 'yellow', 'green'],
-        'category': Category.objects.all(),
-        'product': Product.objects.all(),
-        'users':User.objects.all(),
-        'profile_header':ProfileHeader,
-    }
-   return HttpResponse(template.render(context, request)) 
-
 @login_required(login_url="Login")
 def home(request):
     template = loader.get_template('shop/home.html')
@@ -54,6 +39,7 @@ def home(request):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url="Login")
 def profile(request):
     template = loader.get_template('shop/profile.html')
     context = {
@@ -64,6 +50,7 @@ def profile(request):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url="Login")
 def settings(request):
     template = loader.get_template('shop/settings.html')
     context = {
@@ -73,6 +60,7 @@ def settings(request):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url="Login")
 def pages_faq(request):
     template = loader.get_template('shop/pages_faq.html')
     context = {
@@ -82,6 +70,45 @@ def pages_faq(request):
         'profile_header':ProfileHeader,
     }
     return HttpResponse(template.render(context, request))
+
+@login_required(login_url="Login")
+def add_product(request):
+    form = AddProductForm()
+    if request.method == "POST":
+        form = AddProductForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("Home")
+        else:
+            form = AddProductForm()
+    template = loader.get_template('shop/add_product.html')
+    context = {
+        'addform':form,
+    }
+    return HttpResponse(template.render(context, request))
+
+@login_required(login_url="Login")
+def update_product(request,pk):
+    product = Product.objects.get(id=pk)
+    form = AddProductForm(instance=product)
+    if request.method == "POST":
+        form = AddProductForm(request.POST,request.FILES,instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect("Home")
+        else:
+            form = AddProductForm()
+    template = loader.get_template('shop/update_product.html')
+    context = {
+        'updateform':form,
+    }
+    return HttpResponse(template.render(context, request))
+
+@login_required(login_url="Login")
+def delete_product(request,pk):
+    product = Product.objects.get(id=pk)
+    product.delete()
+    return redirect("Home")
 
 def signup(request):
     form = CreateUserForm()
@@ -101,7 +128,7 @@ def signup(request):
     return HttpResponse(template.render(context, request))
 
 def login(request):
-    form = LoginForm()
+    form = LoginUserForm()
     if request.method == 'POST':
         form = LoginForm(request,data=request.POST)
         if form.is_valid():
@@ -121,6 +148,7 @@ def login(request):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url="Login")
 def testing(request):
     template = loader.get_template('shop/testing.html')
     context = {

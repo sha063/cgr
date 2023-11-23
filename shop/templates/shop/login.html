@@ -1,10 +1,5 @@
 {% extends "./../index.html" %}
 {% block login %}
-{% if form.errors %}
-  <p>Please, Check your username and password</p>
-{% else %}
-  <p>Please, Use the following form to login</p>
-{% endif %}
 <div class="container">
 
   <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
@@ -31,9 +26,9 @@
               <form novalidate method="post" autocomplete="on">
                 {% csrf_token %}
                 {{loginform.as_p}}
-                <input type="submit" value="Login">
+                <input type="submit" value="Login" class="btn btn-primary">
                 <div class="col-12">
-                  <p class="small mb-0">Don't have account? <a href="{% url 'Signup' %}">Create an account</a></p>
+                  <p class="small mb-0">Don't have account? <a href="{% url 'Signup' %}">Signup</a></p>
                 </div>
               </form>
 

@@ -10,6 +10,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['djangodj.pythonanywhere.com','localhost','127.0.0.1','https://8000-cs-457023567958-default.cs-asia-southeast1-bool.cloudshell.dev']
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
