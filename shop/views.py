@@ -8,15 +8,34 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import models
 from django.contrib.auth.decorators import login_required
 
+#
+p = Product.objects.all()
+
 #links
 Login = 'Login'
 Profile = 'Profile'
 PagesFaq = 'PagesFaq'
 Home = 'Home'
 Signup = 'Signup'
+
+#strings
+
+
 class profile_header:
     def __init__(self, icon, name,link):
         self.icon = icon
+        self.name = name
+        self.link = link
+
+class a:
+    def __init__(self, name,icon,list):
+        self.name = name
+
+        self.list = list
+        self.icon = icon
+
+class b:
+    def __init__(self, name, link):
         self.name = name
         self.link = link
 
@@ -25,17 +44,25 @@ ProfileHeader = [profile_header('person','My Profile',Profile),
      profile_header('question-circle','Need Help?',PagesFaq),
      profile_header('box-arrow-right','Sign Out',Login),]
 
+alist = [
+    a('Dashboard','menu-button-wide',[b('Home',''), b('About','About'),b('Pages FAQ','PagesFaq'),]),
+    a('Database','database',[b('Add Product','AddProduct')]),
+    a('Users','person-circle',[b('Profile','Profile'),b('Edit Profile','Edit'),]),
+    a('Home','house',[b('Table','#table'),]),
+]
+
 @login_required(login_url="Login")
 def home(request):
     template = loader.get_template('shop/home.html')
     context = {
-
         'title': 'CGR',
         'page_title': Home,
         'notifications': ['red', 'yellow', 'green'],
         'category': Category.objects.all(),
         'product': Product.objects.all(),
+        'product_fields': Product,
         'profile_header':ProfileHeader,
+        'alist':alist,
     }
     return HttpResponse(template.render(context, request))
 
@@ -44,18 +71,6 @@ def profile(request):
     template = loader.get_template('shop/profile.html')
     context = {
         'page_title': Profile,
-        'category': Category.objects.all(),
-        'product': Product.objects.all(),
-        'profile_header':ProfileHeader,
-    }
-    return HttpResponse(template.render(context, request))
-
-@login_required(login_url="Login")
-def settings(request):
-    template = loader.get_template('shop/settings.html')
-    context = {
-        'category': Category.objects.all(),
-        'product': Product.objects.all(),
         'profile_header':ProfileHeader,
     }
     return HttpResponse(template.render(context, request))
@@ -65,8 +80,6 @@ def pages_faq(request):
     template = loader.get_template('shop/pages_faq.html')
     context = {
         'page_title':PagesFaq,
-        'category': Category.objects.all(),
-        'product': Product.objects.all(),
         'profile_header':ProfileHeader,
     }
     return HttpResponse(template.render(context, request))
@@ -119,32 +132,40 @@ def signup(request):
             return redirect("Login")
     template = loader.get_template('shop/signup.html')
     context = {
-        'page_title':PagesFaq,
-        'category': Category.objects.all(),
-        'product': Product.objects.all(),
-        'profile_header':ProfileHeader,
-        'registerform':form,
+        'signupform':form,
     }
     return HttpResponse(template.render(context, request))
 
 def login(request):
     form = LoginUserForm()
     if request.method == 'POST':
-        form = LoginForm(request,data=request.POST)
+        form = LoginUserForm(request,data=request.POST)
         if form.is_valid():
             username = request.POST.get('username')
             password = request.POST.get('password')
             user = authenticate(request,username=username,password=password)
             if user is not None:
                 auth.login(request,user)
-                return redirect("Home")
+                return redirect("Profile")
     template = loader.get_template('shop/login.html')
     context = {
-        'page_title':PagesFaq,
-        'category': Category.objects.all(),
-        'product': Product.objects.all(),
-        'profile_header':ProfileHeader,
         'loginform':form,
+    }
+    return HttpResponse(template.render(context, request))
+
+@login_required(login_url="Login")
+def edit(request):
+    form = EditUserForm()
+    if request.method == 'POST':
+        form = EditUserForm(request.POST,instance = request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("Profile")
+    else:
+        form = EditUserForm()
+    template = loader.get_template('shop/edit.html')
+    context = {
+        'editform':form,
     }
     return HttpResponse(template.render(context, request))
 
@@ -152,9 +173,6 @@ def login(request):
 def testing(request):
     template = loader.get_template('shop/testing.html')
     context = {
-        'category': Category.objects.all(),
-        'product': Product.objects.all(),
-        'profile_header':a,
     }
     return HttpResponse(template.render(context, request))
 
