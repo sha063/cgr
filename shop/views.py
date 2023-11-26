@@ -45,7 +45,7 @@ ProfileHeader = [profile_header('person','My Profile',Profile),
      profile_header('box-arrow-right','Sign Out',Login),]
 
 alist = [
-    a('Dashboard','menu-button-wide',[b('Home',''), b('About','About'),b('Pages FAQ','PagesFaq'),]),
+    a('Dashboard','menu-button-wide',[b('Home','Home'), b('About','About'),b('Pages FAQ','PagesFaq'),]),
     a('Database','database',[b('Add Product','AddProduct')]),
     a('Users','person-circle',[b('Profile','Profile'),b('Edit Profile','Edit'),]),
     a('Home','house',[b('Table','#table'),]),
@@ -72,6 +72,7 @@ def profile(request):
     context = {
         'page_title': Profile,
         'profile_header':ProfileHeader,
+        'alist':alist,
     }
     return HttpResponse(template.render(context, request))
 
@@ -81,6 +82,7 @@ def pages_faq(request):
     context = {
         'page_title':PagesFaq,
         'profile_header':ProfileHeader,
+        'alist':alist,
     }
     return HttpResponse(template.render(context, request))
 
