@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms.widgets import PasswordInput, TextInput
 from . models import *
+from django.forms import ModelForm
 
 #register
 class CreateUserForm(UserCreationForm):
@@ -45,6 +46,10 @@ class AddProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for i in self.fields:
-            self.fields[i].widget.attrs.update({'class':'form-control'})
+            if i!= 'armature' or 'frame' or 'brush' or 'stator':
+                self.fields[i].widget.attrs.update({'class':'form-control'})
+            else:
+                self.fields[i].widget.attrs.update({'class':'form-check-input'})
+                
          
     

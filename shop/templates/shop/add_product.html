@@ -1,51 +1,75 @@
 {% extends "./../index.html" %}
-{% block add_product %}
-<main>
-  <div class="container">
-
-    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-
-            <div class="d-flex justify-content-center py-4">
-              <a href="index.html" class="logo d-flex align-items-center w-auto">
-                <img src="assets/img/logo.png" alt="">
-                <span class="d-none d-lg-block">NiceAdmin</span>
-              </a>
-            </div><!-- End Logo -->
-
-            <div class="card mb-3">
-
-              <div class="card-body">
-
-                <div class="pt-4 pb-2">
-                  <h5 class="card-title text-center pb-0 fs-4">Add new item</h5>
+{% load widget_tweaks %}
+{% block block %}
+<div class="container">
+  <section class="section register min-vh-100 flex-column align-items-center justify-content-center py-4">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Add New Item</h5>
+            <!-- General Form Elements -->
+            <form novalidate method="post" autocomplete="on" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="row mb-3">
+                <label for="{{addform.id_number.id_for_label}}" class="col-sm-4 col-form-label">Serial Number</label>
+                <div class="col-sm-8">
+                  {% render_field addform.id_number type="text" %}
                 </div>
-
-                <form novalidate method="post" autocomplete="on" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  {{addform.as_p}}
-                  <input type="submit" value="Add" class="btn btn-primary">
-                </form>
-
               </div>
-            </div>
-
-            <div class="credits">
-              <!-- All the links in the footer should remain intact. -->
-              <!-- You can delete the links only if you purchased the pro version. -->
-              <!-- Licensing information: https://bootstrapmade.com/license/ -->
-              <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-              Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-            </div>
-
+              <div class="row mb-3">
+                <label for="{{addform.rpm.id_for_label}}" class="col-sm-4 col-form-label">RPM Speed</label>
+                <div class="col-sm-8">
+                  {% render_field addform.rpm %}
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="{{addform.repaired_at.id_for_label}}" class="col-sm-4 col-form-label">Last repaired Date</label>
+                <div class="col-sm-8">
+                  {% render_field addform.repaired_at type="date" %}
+                </div>
+              </div>
+              <div class="row mb-3">
+                <legend class="col-form-label col-sm-4 pt-0">Repaired Parts</legend>
+                <div class="col-sm-8">
+                  <div class="form-check">
+                    {% render_field addform.armature type="checkbox" class="form-check-input" id="armature" required="red" %}
+                    <label class="form-check-label" for="armature">
+                      Armature
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    {% render_field addform.brush type="checkbox" class="form-check-input" id="brush" %}
+                    <label class="form-check-label" for="brush">
+                      Brush
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    {% render_field addform.stator type="checkbox" class="form-check-input" id="stator" %}
+                    <label class="form-check-label" for="stator">
+                      Stator
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    {% render_field addform.frame type="checkbox" class="form-check-input" id="frame" %}
+                    <label class="form-check-label" for="frame">
+                      Frame
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="{{addform.description.id_for_label}}" class="col-sm-4 col-form-label">Info</label>
+                <div class="col-sm-8">
+                  {% render_field addform.description %}
+                </div>
+              </div>
+              <input type="submit" value="Add" class="btn btn-primary">
+            </form><!-- End General Form Elements -->
           </div>
         </div>
       </div>
-
-    </section>
-
-  </div>
-</main><!-- End #main -->
-{% endblock add_product %}
+    </div>
+  </section>
+</div>
+{% endblock block %}
